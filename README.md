@@ -1,25 +1,17 @@
 classDiagram
-  %% ====== Main ======
+  %% ===== Main =====
   class Main {
     +main(String[] args) void
   }
 
-  %% ====== Report ======
+  %% ===== Report product =====
   class Report {
     -String title
     -String content
-    +Report(Builder)  %% existing nested builder ctor
+    +Report(String, String)
     +getTitle() String
     +getContent() String
     +toString() String
-  }
-
-  class "Report~Builder~" as ReportBuilder {
-    -String title
-    -String content
-    +setTitle(String) Report~Builder~
-    +setContent(String) Report~Builder~
-    +build() Report
   }
 
   interface IReportBuilder {
@@ -36,26 +28,16 @@ classDiagram
     +build() Report
   }
 
-  %% ====== Car ======
+  %% ===== Car product =====
   class Car {
     -String bodyType
     -String engine
     -String trim
-    +Car(Builder)     %% existing nested builder ctor
+    +Car(String, String, String)
     +getBodyType() String
     +getEngine() String
     +getTrim() String
     +toString() String
-  }
-
-  class "Car~Builder~" as CarBuilder {
-    -String bodyType = "Sedan"
-    -String engine = "2.0L Turbo Inline-4"
-    -String trim = "Standard"
-    +setBodyType(String) Car~Builder~
-    +setEngine(String) Car~Builder~
-    +setTrim(String) Car~Builder~
-    +build() Car
   }
 
   interface ICarBuilder {
@@ -75,17 +57,14 @@ classDiagram
     +build() Car
   }
 
-  %% ====== Relations ======
-  Report o-- ReportBuilder : builds
-  Car o-- CarBuilder : builds
-
+  %% ===== Relationships =====
   IReportBuilder <|.. ConcreteReportBuilder
   ICarBuilder    <|.. ConcreteCarBuilder
 
   ConcreteReportBuilder --> Report : builds
-  ConcreteCarBuilder --> Car : builds
+  ConcreteCarBuilder   --> Car    : builds
 
-  Main ..> Report : uses
-  Main ..> Car    : uses
   Main ..> IReportBuilder : uses
   Main ..> ICarBuilder    : uses
+  Main ..> Report : prints
+  Main ..> Car    : prints
